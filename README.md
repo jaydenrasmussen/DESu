@@ -1,6 +1,6 @@
 # DESu
 
-
+Client will send their ip address to `/client/(their ip)`
 
 
 
