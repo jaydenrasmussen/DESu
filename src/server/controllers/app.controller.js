@@ -55,7 +55,7 @@ async function splitFile(filename) {
     // Pass the length and the filename
     await execa.shell(
         'uploads/fileIO ' +
-            './uploads/' +
+            'uploads/' +
             filename +
             '.enc ' +
             clients +
