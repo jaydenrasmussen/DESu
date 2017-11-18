@@ -31,6 +31,7 @@ async function savefilename(file) {
     }
     current[file] = hasha(file);
     await fs.writeJson('./uploads/uploads.json', current);
+    await fs.rename('./uploads/' + file, './uploads/' + current[file]);
     return current[file];
 }
 
@@ -52,7 +53,16 @@ async function splitFile(filename) {
     let clients = await getClients();
     clients = clients.length;
     // Pass the length and the filename
-    await execa('./uploads/fileIO ' + filename + ' ' + clients);
+    await execa(
+        './uploads/fileIO ' +
+            './uploads/' +
+            filename +
+            '.enc ' +
+            clients +
+            './split/' +
+            filename +
+            '/'
+    );
 }
 
 async function getClients() {
@@ -80,13 +90,18 @@ async function sendToClients(filename) {
     }
 }
 async function genKeys() {
-    return execa('./enc/bitcrypt -g -b 2048 -p ./');
+    return execa.shell('./enc/bitcrypt -g -b 2048 -p ./enc/ ')
+        .catch(console.log);
 }
 async function encryptFile(filename) {
-    // generate keys
+    // // generate keys
     await genKeys();
-    // perform encryption
-    await execa('./enc/bcrypt -e -f ./uploads/' + filename + ' -k ./enc/public.pem');
-    // store the key
+    // // perform encryption
+    await execa.shell(
+        './enc/bitcrypt -e -f ./uploads/' + filename + ' -k ./enc/public.pem'
+    );
+    await fs.remove('./uploads/' + filename);
+    await fs.remove('./enc/public.pem');
+    // // store the key
     await fs.move('./enc/private.pem', './keys/' + filename + '.key');
 }

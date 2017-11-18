@@ -1,13 +1,19 @@
 // J. Ramussen 2017
 
+const path = require('path');
 const express = require('express');
 let router = express.Router();
 
 const multer = require('multer');
-const upload = multer({ dest: './uploads/' });
+const storage = torage = multer.diskStorage({
+  destination: './uploads/',
+  filename: function (req, file, cb) {
+      cb(null, file.originalname.split('/').pop().trim());
+  }
+});
+const upload = multer({ storage: storage });
 
-const got = require('got');
-
+const fs = require('fs-extra')
 const controller = require('../controllers/app.controller');
 
 router.get('/', (req, res) => {
@@ -21,13 +27,15 @@ router.get('/client/', (req, res) => {
     return res.send(obj.ip);
 });
 
-router.post('/file/:filename', upload.single('file'), (req, res) => {
+router.post('/file/:filename', upload.single('file'), async (req, res) => {
     res.status(204);
     res.send('Upload Successful').end();
 
-    let filename = controller.savefilename(req.params.filename);
-    controller.splitFile(filename);
-    controller.sendToClients(filename);
+    let filename = await controller.savefilename(req.params.filename);
+    // encrypt
+    await controller.encryptFile(filename);
+    // controller.splitFile(filename);
+    // controller.sendToClients(filename);
 });
 
 router.get('/file/:filename', async (req, res) => {
