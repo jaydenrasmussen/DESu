@@ -3,8 +3,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <fstream>
 
 using std::string;
+
+bool showDebug = false;
 
 void createNewDirectory(){
   system("mkdir -p ~/splitFiles");
@@ -20,45 +23,46 @@ void createNewFiles(char filename[], int numToSplit){
   //go to the end, get the size, return to beginning
   fseek(fp, 0, SEEK_END);
   int size = ftell(fp);
-  printf("file size in bytes: %d\n", size);
+  if(showDebug)
+    printf("file size in bytes: %d\n", size);
   fseek(fp, 0, SEEK_SET);
   //calculate split size
   int splitSize = size/numToSplit;
-  printf("splitSize: %d\n", splitSize);
+  if(showDebug)
+    printf("splitSize: %d\n", splitSize);
   //for each new file
   for(int i = 0; i < numToSplit; i++){
-    printf("current file #: %d\n",i);
-    //generate new file name
+    if(showDebug)
+      printf("current file #: %d\n",i);
     string filenamestring(filename);
-    string newFileName = filePath + filenamestring;
+    string newFileName = filenamestring;
     newFileName += i+'0';
-    //find value of i to add
-    //printf("%s\n", newFileName);
+    if(showDebug)
+      printf("new file name: %s\n", newFileName);
     FILE *nf;
     //copy data
+    nf = fopen(newFileName.c_str(), "w");
     for(int j = i * splitSize; j <= ((i+1) * splitSize - 1); j++){
-      nf = fopen(newFileName.c_str(), "w");
-      printf("   current position: %d\n", j);
-      //fseek(fp, j, SEEK_SET);
+      if(showDebug)
+        printf("   current position: %d\n", j);
+      fseek(fp, j, SEEK_SET);
       int c = fgetc(fp);
-      printf("      character adding: %c\n", c);
-      //fprintf(nf, c);
       fputc(c, nf);
-      //fclose(nf);
+      if(showDebug)
+        printf("      character adding: %c\n", c);
     }
-
-    //fclose(nf);
-    //push that new file
+    fclose(nf);
   }
   fclose(fp);
 }
 
 int main(int argc, char * argv[]){
-  for(int i = 0; i < argc; i++){
-    printf("%s\n",argv[i]);
+  if(showDebug){
+    for(int i = 0; i < argc; i++){
+      printf("%s\n",argv[i]);
+    }
   }
   //get file name
   int numToSplit = *argv[2] - '0';
   createNewFiles(argv[1], numToSplit);
-
 }
