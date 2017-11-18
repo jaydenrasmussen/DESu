@@ -5,15 +5,21 @@ const express = require('express');
 let router = express.Router();
 
 const multer = require('multer');
-const storage = torage = multer.diskStorage({
-  destination: './uploads/',
-  filename: function (req, file, cb) {
-      cb(null, file.originalname.split('/').pop().trim());
-  }
+const storage = multer.diskStorage({
+    destination: './uploads/',
+    filename: (req, file, cb) => {
+        cb(
+            null,
+            file.originalname
+                .split('/')
+                .pop()
+                .trim()
+        );
+    }
 });
 const upload = multer({ storage: storage });
 
-const fs = require('fs-extra')
+const fs = require('fs-extra');
 const controller = require('../controllers/app.controller');
 
 router.get('/', (req, res) => {

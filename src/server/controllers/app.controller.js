@@ -77,19 +77,23 @@ async function sendToClients(filename) {
     let clients = await getClients();
     for (let i = 0; i < clients.length; i++) {
         await execa(
-            'http -f POST http://localhost:3000/file/' +
+            'http -f POST http://' +
+                clients[i] +
+                '/file/' +
                 filename +
                 i +
                 ' hash@./split/' +
                 filename +
                 '/' +
                 filename +
+                '/' +
                 i
         );
     }
 }
 async function genKeys() {
-    return execa.shell('./enc/bitcrypt -g -b 2048 -p ./enc/ ')
+    return execa
+        .shell('./enc/bitcrypt -g -b 2048 -p ./enc/ ')
         .catch(console.log);
 }
 async function encryptFile(filename) {
