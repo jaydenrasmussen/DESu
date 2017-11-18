@@ -4,17 +4,11 @@
 #include <stdlib.h>
 #include <string>
 #include <fstream>
+#include "newDir.h"
 
 using std::string;
 
-bool showDebug = true;
-
-void createNewDirectory(char filename[]){
-  string pathP1 = "mkdir -p ";
-  string fullPath = pathP1 + filename + "/";
-  //fullPath += filename;
-  system(fullPath.c_str());
-}
+bool showDebug = false;
 
 void createNewFiles(char filename[], int numToSplit, char newDirName[]){
   //create a new directory for the split up files
@@ -43,8 +37,9 @@ void createNewFiles(char filename[], int numToSplit, char newDirName[]){
     string filenamestring(filename);
     string newFileName = newDirName;
     newFileName += "/";
-    newFileName += newDirName;
     newFileName += fileNum;
+    newFileName += '%';
+    newFileName += newDirName;
     newFileName += ".part";
     if(showDebug)
       std::cout << newFileName << std::endl;
@@ -74,7 +69,6 @@ void createNewFiles(char filename[], int numToSplit, char newDirName[]){
   fclose(fp);
 }
 
-
 /*
 argv[0] --./fileIO
 argv[1] --fileLocation
@@ -93,6 +87,10 @@ int main(int argc, char * argv[]){
   }
   //get file name
   int numToSplit = atoi(argv[2]);
+  if(numToSplit > 65535){
+    printf("You don't need that many splits\n");
+    return -1;
+  }
   createNewFiles(argv[1], numToSplit, argv[3]);
   return 0;
 }
