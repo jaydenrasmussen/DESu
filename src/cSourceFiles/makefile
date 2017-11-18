@@ -8,3 +8,4 @@ reassemble: reassembly.cpp
 
 clean:
 	rm fileIO
+	rm reassemble
