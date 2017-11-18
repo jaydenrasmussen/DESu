@@ -11,7 +11,8 @@ module.exports = {
     findFile,
     getClients,
     splitFile,
-    sendToClients
+    sendToClients,
+    encryptFile
 };
 
 function getIP(req, res) {
@@ -77,4 +78,15 @@ async function sendToClients(filename) {
                 i
         );
     }
+}
+async function genKeys() {
+    return execa('./enc/bitcrypt -g -b 2048 -p ./');
+}
+async function encryptFile(filename) {
+    // generate keys
+    await genKeys();
+    // perform encryption
+    await execa('./enc/bcrypt -e -f ./uploads/' + filename + ' -k ./enc/public.pem');
+    // store the key
+    await fs.move('./enc/private.pem', './keys/' + filename + '.key');
 }
