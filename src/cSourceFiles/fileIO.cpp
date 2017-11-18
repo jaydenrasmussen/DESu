@@ -8,7 +8,7 @@
 
 using std::string;
 
-bool showDebug = false;
+bool showDebug = true;
 
 void createNewFiles(char filename[], int numToSplit, char newDirName[]){
   //create a new directory for the split up files
@@ -37,10 +37,9 @@ void createNewFiles(char filename[], int numToSplit, char newDirName[]){
     string filenamestring(filename);
     string newFileName = newDirName;
     newFileName += "/";
-    newFileName += fileNum;
-    newFileName += '%';
     newFileName += newDirName;
-    newFileName += ".part";
+    newFileName += ".";
+    newFileName += fileNum;
     if(showDebug)
       std::cout << newFileName << std::endl;
     //this is the new file
