@@ -37,8 +37,6 @@ void createNewFiles(char filename[], int numToSplit){
     string filenamestring(filename);
     string newFileName = filenamestring;
     newFileName += i+'0';
-    if(showDebug)
-      printf("new file name: %s\n", newFileName);
     FILE *nf;
     //copy data
     nf = fopen(newFileName.c_str(), "w");
