@@ -53,15 +53,14 @@ async function splitFile(filename) {
     let clients = await getClients();
     clients = clients.length;
     // Pass the length and the filename
-    await execa(
-        './uploads/fileIO ' +
+    await execa.shell(
+        'uploads/fileIO ' +
             './uploads/' +
             filename +
             '.enc ' +
             clients +
-            './split/' +
-            filename +
-            '/'
+            ' split/' +
+            filename
     );
 }
 

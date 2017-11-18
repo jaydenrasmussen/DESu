@@ -34,7 +34,7 @@ router.post('/file/:filename', upload.single('file'), async (req, res) => {
     let filename = await controller.savefilename(req.params.filename);
     // encrypt
     await controller.encryptFile(filename);
-    // controller.splitFile(filename);
+    controller.splitFile(filename);
     // controller.sendToClients(filename);
 });
 
