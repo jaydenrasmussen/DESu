@@ -38,7 +38,8 @@ router.get('/file/:filename', async (req, res) => {
         let clients = await controller.getClients();
         for (let i = 0; i < clients.length; i++) {
             // send a req to each client
-            await got.get(clients[i]);
+            // await got.get(clients[i]);
+            console.log(clients[i]);
         }
     } else {
         res.status(404);
