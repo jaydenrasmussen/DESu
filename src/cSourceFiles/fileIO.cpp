@@ -37,7 +37,7 @@ void createNewFiles(char filename[], int numToSplit, char newDirName[]){
     string filenamestring(filename);
     string newFileName = newDirName;
     newFileName += "/";
-    newFileName += newDirName;
+    //newFileName += newDirName;
     newFileName += ".";
     newFileName += fileNum;
     if(showDebug)
