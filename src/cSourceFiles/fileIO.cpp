@@ -10,7 +10,7 @@ using std::string;
 bool showDebug = false;
 
 void createNewDirectory(){
-  system("mkdir -p ~/splitFiles");
+  system("mkdir -p /splitFiles");
 }
 
 void createNewFiles(char filename[], int numToSplit){
