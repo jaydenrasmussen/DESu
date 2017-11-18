@@ -7,7 +7,7 @@
 #include <dirent.h>
 #include "newDir.h"
 
-bool showDebug = true;
+bool showDebug = false;
 /*
 to reassemble:
 create final file
