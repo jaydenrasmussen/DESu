@@ -25,33 +25,36 @@ router.post('/file/:filename', upload.single('file'), (req, res) => {
     res.status(204);
     res.send('Upload Successful').end();
 
-    controller.savefilename(req.params.filename);
+    let filename = controller.savefilename(req.params.filename);
+    controller.splitFile(filename);
+    controller.sendToClients(filename);
 });
 
 router.get('/file/:filename', async (req, res) => {
     // look for the filename
     let fileBool = controller.findFile({
-        filename:req.params.filename
+        filename: req.params.filename
     });
-    if (fileBool = true) {
+    if ((fileBool = true)) {
         // query all the registered clients for
         let clients = await controller.getClients();
         for (let i = 0; i < clients.length; i++) {
             // send a req to each client
-            // await got.get(clients[i]);
+            // await got.get(clients[i] + '/files/' + req.params.filename);
             console.log(clients[i]);
+            controller.streamToClient(clients[i]);
         }
     } else {
         res.status(404);
         res.send('Cannot find file: ' + file.filename);
     }
     // if we have the file
-        // query the
-        // put it back together
-        // send it back
+    // query the
+    // put it back together
+    // send it back
     // if not,
-        // send a 404
-        // tell them we dont have it
-})
+    // send a 404
+    // tell them we dont have it
+});
 
 module.exports = router;
