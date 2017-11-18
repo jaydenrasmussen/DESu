@@ -59,7 +59,7 @@ void reassemble(char directory[], char fileName[]){
       fseek(nf, j, SEEK_SET);
       int c = fgetc(nf);
       if(showDebug)
-        printf("character: %s\n", c);
+        printf("character: %d\n", c);
       fseek(ff, 0, SEEK_END);
       fputc(c, ff);
     }
