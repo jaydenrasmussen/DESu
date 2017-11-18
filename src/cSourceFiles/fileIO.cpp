@@ -38,7 +38,7 @@ void createNewFiles(char filename[], int numToSplit, char newDirName[]){
     string newFileName = newDirName;
     newFileName += "/";
     //newFileName += newDirName;
-    newFileName += ".";
+    //newFileName += ".";
     newFileName += fileNum;
     if(showDebug)
       std::cout << newFileName << std::endl;
