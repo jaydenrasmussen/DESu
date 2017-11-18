@@ -12,7 +12,10 @@ module.exports = {
     getClients,
     splitFile,
     sendToClients,
-    encryptFile
+    encryptFile,
+    reassembleFile,
+    decryptFile,
+    streamToClient
 };
 
 function getIP(req, res) {
@@ -43,7 +46,6 @@ async function findFile(file) {
     if (current[file.filename] === undefined) {
         return false;
     } else {
-        // return file
         return true;
     }
 }
@@ -107,4 +109,14 @@ async function encryptFile(filename) {
     await fs.remove('./enc/public.pem');
     // // store the key
     await fs.move('./enc/private.pem', './keys/' + filename + '.key');
+}
+async function reassembleFile(filename) {
+    await execa.shell('assemble/reassemble assemble/' + filename + ' dec/' + filename + '.enc');
+}
+async function decryptFile(filename) {
+    await execa.shell('bitcrypt -d -f ./dec/' + filename + '.enc -k ./keys/' + filename);
+}
+async function streamToClient(filename) {
+
+    return;
 }

@@ -19,10 +19,8 @@ const upload = multer({ storage: storage });
 
 const controller = require('../controllers/app.controller');
 
-router.get('/', (req, res) => res.send('Hello World!'));
-
-router.get('/file/:filename', (req, res) => {
-    let files = controller.getFiles();
+router.get('/file/:filename', async (req, res) => {
+    let files = await controller.getFiles();
     let file = files[req.params.filename];
     if (file !== undefined) {
         res.download('./uploads/' + req.params.filename + '/' + file);
@@ -37,7 +35,7 @@ router.post('/file/:filename/:num', upload.single('hash'), async (req, res) => {
     res.send('File successfully uploaded!').end();
 
     await controller.saveUploadData(req.params.filename, req.params.num);
-    await controller.moveUploadData(req.params.filename, req.params.num)
+    await controller.moveUploadData(req.params.filename, req.params.num);
 });
 
 module.exports = router;

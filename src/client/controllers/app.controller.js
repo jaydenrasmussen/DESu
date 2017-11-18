@@ -8,7 +8,11 @@ module.exports = {
     moveUploadData
 };
 async function getFiles() {
-    let files = await fs.readJson('./uploads/uploads.json');
+    let files = {};
+
+    if (fs.pathExistsSync('./uploads/uploads.json')) {
+        files = await fs.readJson('./uploads/uploads.json');
+    }
     return files;
 }
 async function saveUploadData(filename, num) {
